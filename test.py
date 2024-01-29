@@ -107,4 +107,30 @@ def test_Search():
         print("Тест пройден.")
 
     assert passed
-test_Search()
+
+# Тест на скачивание трека
+def test_DownloadTrack():
+    driver = webdriver.Chrome(options=options)
+    driver.get("https://www.zaycev.net/")
+
+    path = "/Users/KASADY/Downloads"
+
+    track = driver.find_element(By.CSS_SELECTOR, '[data-qa="track"]')
+    track_name = track.find_element(By.CSS_SELECTOR, '[data-qa="track-link"]').get_attribute('title')
+
+    track.find_element(By.CSS_SELECTOR, '[data-qa="track-download"]').click()
+
+    time.sleep(10)
+
+    files = os.listdir(path)
+
+    passed = False
+
+    for file in files:
+        if track_name in file:
+            print("Файл найден: " + file)
+            passed = True
+
+    assert passed
+
+test_DownloadTrack()
