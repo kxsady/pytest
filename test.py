@@ -36,7 +36,7 @@ def test_Login():
     assert account_btn != None
 
 
- # Неверные данные для авторизации
+# Неверные данные для авторизации
 def test_BadLogin():
     driver = webdriver.Chrome(options=options)
     driver.get("https://www.zaycev.net/")
@@ -62,7 +62,7 @@ def test_BadLogin():
         
     assert error != None
 
- # Тест включения музыки
+# Тест включения музыки
 def test_PlayMusic():
     driver = webdriver.Chrome(options=options)
     driver.get("https://www.zaycev.net/")
@@ -81,4 +81,30 @@ def test_PlayMusic():
 
     assert play_btn != None
 
-test_PlayMusic()
+# Тест на соответствие результатов поиска
+def test_Search():
+    driver = webdriver.Chrome(options=options)
+    driver.get("https://www.zaycev.net/")
+    
+    search_text = 'abc'
+
+    driver.find_element(By.CSS_SELECTOR, '[data-qa="header-search"]').click()
+    driver.find_element(By.CSS_SELECTOR, '[data-qa="header-search"]').send_keys(search_text)
+    driver.find_element(By.CSS_SELECTOR, '[data-qa="header-search-submit"]').click()
+
+    time.sleep(5)
+
+    track_list = driver.find_element(By.CLASS_NAME, 'bm5dwu-0.hJYea').find_elements(By.CSS_SELECTOR, '[data-qa="track"]')
+
+    passed = True
+
+    for track in track_list:
+        if search_text not in track.get_attribute('title').lower():
+            print('В треке ' + track.get_attribute('title') + ' отсутствует ' + search_text)
+            passed = False
+
+    if passed:
+        print("Тест пройден.")
+
+    assert passed
+test_Search()
