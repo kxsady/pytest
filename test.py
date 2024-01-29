@@ -62,4 +62,23 @@ def test_BadLogin():
         
     assert error != None
 
-test_BadLogin()
+ # Тест включения музыки
+def test_PlayMusic():
+    driver = webdriver.Chrome(options=options)
+    driver.get("https://www.zaycev.net/")
+
+    # включить "мой плейлист дня"
+    driver.find_element(By.CLASS_NAME, 'sc-11rm9om-0.hrUxqW').click()
+    time.sleep(10)
+    # найти кнопку паузы
+    driver.find_element(By.CSS_SELECTOR, '[data-qa="player-pause"]').click()
+
+    # найти кнопку плэй
+    play_btn = driver.find_element(By.CSS_SELECTOR, '[data-qa="player-play"]')
+
+    if play_btn != None:
+        print("Тест пройден.")
+
+    assert play_btn != None
+
+test_PlayMusic()
