@@ -36,4 +36,30 @@ def test_Login():
     assert account_btn != None
 
 
-test_Login()
+ # Неверные данные для авторизации
+def test_BadLogin():
+    driver = webdriver.Chrome(options=options)
+    driver.get("https://www.zaycev.net/")
+
+    # поиск и нажатие кнопки Войти
+    driver.find_element(By.CLASS_NAME, 'wfuhyz-10.caCXzL').click()
+    time.sleep(5)
+
+    # поиск и заполнение поля EMail
+    driver.find_element(By.NAME, 'login').send_keys('admin')
+    # поиск и заполнение поля Password
+    driver.find_element(By.NAME, 'password').send_keys('admin')
+    # поиск и нажатие кнопки авторизации
+    driver.find_element(By.CLASS_NAME, 'c4ymd0-0.jBhElb').click()
+    time.sleep(5)
+
+    # найти сообщение об ошибке
+    error = driver.find_element(By.CLASS_NAME, 'ji2meo-3.hjwAMT')
+
+    if error != None:
+        print(error.text)
+        print("Тест пройден.")
+        
+    assert error != None
+
+test_BadLogin()
